@@ -13,7 +13,8 @@ html, body {
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* no scrolling */
+    /* overflow: hidden;  */
+    overflow: auto;
     background: #171717;
     font-family: "Futura";
     display: flex;
@@ -33,14 +34,14 @@ html, body {
 .flex-center {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* spread logo + countdown */
+    justify-content: space-between;
     align-items: center;
-    height: 70vh; /* main area for logo + countdown */
+    height: 70vh;
     width: 100%;
 }
 
 .sf3Logo {
-    max-height: 35vh; /* logo never taller than 35% of screen */
+    max-height: 35vh;
     width: auto;
     margin-bottom: 2vh;
     flex-shrink: 0;
@@ -53,6 +54,7 @@ html, body {
     color: white;
     flex-shrink: 0;
 }
+
 .memoriesButton {
     font-size: clamp(24px, 6vw, 48px);
     font-family: "Futura Bold";
@@ -60,25 +62,141 @@ html, body {
     color: white;
     flex-shrink: 0;
 }
+
 .memoriesButton:hover {
     cursor: pointer;
     transform: scale(1.05);
 }
+
 a {
-  display: inline-block; 
-  transition: transform 0.25s ease;
+    display: inline-block; 
+    transition: transform 0.25s ease;
 }
 
-.countdown-digit {
+/* Carousel container */
+.image-container {
+    width: 90vw;
+    max-width: 1016px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    border-radius: 25px;
+    background: #000;
+}
+
+/* Carousel images */
+.carousel-img {
+    width: 100%;
+    height: auto; /* natural aspect ratio */
+    display: block;
+    transition: all 0.6s ease-in-out;
+    position: absolute; /* only when sliding */
+}
+
+.carousel-img.active {
+    left: 0;
+    z-index: 2;
+}
+
+.carousel-img.exiting {
+    left: -100%;
+    z-index: 1;
+}
+.setWrap {
+  width: min(900px, 92vw);
+  margin-top: 18px;
+  margin-bottom: -50px;
+}
+
+.setList {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.setCard {
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 26px;
+  padding: 26px 28px;
+  color: white;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 420ms cubic-bezier(.2,.9,.2,1), opacity 420ms ease;
+  will-change: transform, opacity;
+}
+
+.setCard.exit {
+  transform: translateY(-26px);
+  opacity: 0;
+}
+
+
+.setTopLine {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.setLogo {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  padding: 6px;
+  flex-shrink: 0;
+}
+
+.setTextWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.setName {
+  font-size: clamp(22px, 4vw, 32px);
+  font-family: "Futura Bold";
+}
+
+.setMeta {
+  font-size: clamp(14px, 2.6vw, 18px);
+  opacity: 0.85;
+}
+
+.setSub {
+  margin-top: 10px;
+  opacity: 0.85;
+  font-size: clamp(14px, 2.5vw, 18px);
+}
+
+.badge {
   display: inline-block;
-  overflow: hidden;
-  height: 1.2em;
-  margin: 0 2px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.16);
+  opacity: 0.95;
+  margin-right: 10px;
 }
 
-.countdown-digit-inner {
-  transition: transform 0.3s ease;
+.badge.live {
+  border-color: rgba(70,255,170,0.45);
 }
+
+.badge.next {
+  border-color: rgba(120,170,255,0.45);
+}
+
+.badge.later {
+  border-color: rgba(255,200,120,0.45);
+}
+
 
 @media (max-width: 400px) {
     .topText {
