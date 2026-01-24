@@ -33,6 +33,13 @@
                 "name": "ARP3GGI///O",
                 "startTime": 1769277600,
                 "length": 60,
+                "logo": 5,
+                "genre": "Drum and Bass"
+            },
+            {
+                "name": "B2B - Dax & Hobnoxus",
+                "startTime": 1769281200,
+                "length": 60,
                 "logo": 4,
                 "genre": "Neurofunk"
             },
@@ -40,28 +47,28 @@
                 "name": "Kima",
                 "startTime": 1769284800,
                 "length": 60,
-                "logo": 5,
+                "logo": 6,
                 "genre": "Trance"
             },
             {
                 "name": "2N",
                 "startTime": 1769288400,
                 "length": 60,
-                "logo": 6,
+                "logo": 7,
                 "genre": "Genre-fluid"
             },
             {
                 "name": "Windworks",
                 "startTime": 1769292000,
                 "length": 20,
-                "logo": 7,
+                "logo": 8,
                 "genre": "Fireworks and Drone Show"
             },
             {
                 "name": "Intermission",
                 "startTime": 1769293200,
                 "length": 40,
-                "logo": 8
+                "logo": 9
             }
         ]
     },
@@ -96,7 +103,7 @@
                 "genre": "Dark Bass"
             },
             {
-                "name": "ARP3GGI/O",
+                "name": "ARP3GGI///O",
                 "startTime": 1769310000,
                 "length": 60,
                 "logo": 3,
