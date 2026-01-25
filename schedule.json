@@ -92,56 +92,56 @@
                 "name": "B3B - Johcaw, Valant, KA!JU",
                 "startTime": 1769302800,
                 "length": 60,
-                "logo": -1,
+                "logo": 2,
                 "genre": "Not Garage, DnB, Trap or Dubstep"
             },
             {
                 "name": "CAWSTIC",
                 "startTime": 1769306400,
                 "length": 60,
-                "logo": 2,
+                "logo": 3,
                 "genre": "Dark Bass"
             },
             {
                 "name": "ARP3GGI///O",
                 "startTime": 1769310000,
                 "length": 60,
-                "logo": 3,
+                "logo": 4,
                 "genre": "Drum and Bass"
             },
             {
                 "name": "B2B - Dax & Hobnoxus",
                 "startTime": 1769313600,
                 "length": 60,
-                "logo": -1,
+                "logo": 5,
                 "genre": "Neurofunk"
             },
             {
                 "name": "Kima",
                 "startTime": 1769317200,
                 "length": 60,
-                "logo": 4,
+                "logo": 6,
                 "genre": "Trance"
             },
             {
                 "name": "2N",
                 "startTime": 1769320800,
                 "length": 60,
-                "logo": 5,
+                "logo": 7,
                 "genre": "Genre-fluid"
             },
             {
                 "name": "Windworks",
                 "startTime": 1769324400,
                 "length": 20,
-                "logo": 6,
+                "logo": 8,
                 "genre": "Fireworks and Drone Show"
             },
             {
                 "name": "Close",
                 "startTime": 1769325600,
                 "length": 10,
-                "logo": 7,
+                "logo": 9,
                 "genre": ""
             }
         ]
