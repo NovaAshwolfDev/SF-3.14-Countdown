@@ -7,7 +7,6 @@
     font-family: "Futura Bold";
     src: url("../fonts/Futura.otf");
 }
-
 html, body {
     margin: 0;
     padding: 0;
@@ -21,6 +20,30 @@ html, body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    scroll-behavior: smooth;
+    overflow-y: scroll;
+}
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #08001a;
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #8f8f8f #000000;
 }
 
 .topText {
@@ -31,21 +54,36 @@ html, body {
     flex-shrink: 0;
 }
 
-.flex-center {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    height: 70vh;
-    width: 100%;
+.flex-center{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 70vh;
+  width: 100%;
+  transition: transform 420ms cubic-bezier(.2,.9,.2,1);
+  transform: translateY(0);
+  will-change: transform;
 }
 
-.sf314Logo {
-    max-height: 70vh;
-    width: 15%;
-    height: auto;
-    margin-bottom: 2vh;
-    flex-shrink: 0;
+.flex-center.logoShift{
+  transform: translateY(80px); /* or -80px if you meant UP */
+}
+
+.sf314Logo{
+  max-height: 70vh;
+  width: 15%;
+  height: auto;
+  margin-bottom: 2vh;
+  flex-shrink: 0;
+
+  transition: transform 420ms cubic-bezier(.2,.9,.2,1);
+  transform: scale(1);
+  will-change: transform;
+}
+
+.sf314Logo.logoBig{
+  transform: scale(1.5);
 }
 
 .countdown {
@@ -56,53 +94,11 @@ html, body {
     flex-shrink: 0;
 }
 
-.memoriesButton {
-    font-size: clamp(24px, 6vw, 48px);
-    font-family: "Futura Bold";
-    text-align: center;
-    color: white;
-    flex-shrink: 0;
-}
-
-.memoriesButton:hover {
-    cursor: pointer;
-    transform: scale(1.05);
-}
-
 a {
     display: inline-block; 
     transition: transform 0.25s ease;
 }
 
-/* Carousel container */
-.image-container {
-    width: 90vw;
-    max-width: 1016px;
-    margin: 0 auto;
-    position: relative;
-    overflow: hidden;
-    border-radius: 25px;
-    background: #000;
-}
-
-/* Carousel images */
-.carousel-img {
-    width: 100%;
-    height: auto; /* natural aspect ratio */
-    display: block;
-    transition: all 0.6s ease-in-out;
-    position: absolute; /* only when sliding */
-}
-
-.carousel-img.active {
-    left: 0;
-    z-index: 2;
-}
-
-.carousel-img.exiting {
-    left: -100%;
-    z-index: 1;
-}
 .setWrap {
   width: min(900px, 92vw);
   margin-top: 18px;
@@ -210,20 +206,24 @@ a {
 }
 
 .tween {
-  transition: transform 520ms cubic-bezier(.2,.9,.2,1), opacity 520ms ease;
   will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  transition: transform 420ms cubic-bezier(.2,.9,.2,1), opacity 420ms ease;
 }
-
+.tween-prep {
+  opacity: 0;
+  transform: translateY(26px); /* starts below */
+  transition: none !important;  /* no transition while prepping */
+}
 .tween-out-down {
-  transform: translateY(26px);
+  transform: translateY(26px); /* exits upward (old card goes up and out) */
   opacity: 0;
 }
-
 .tween-in-up {
-  transform: translateY(-26px);
   opacity: 0;
+  transform: translateY(-26px); /* starts below */
 }
-
 .tween-in-go {
   transform: translateY(0);
   opacity: 1;
