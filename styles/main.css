@@ -40,9 +40,10 @@ html, body {
     width: 100%;
 }
 
-.sf3Logo {
-    max-height: 35vh;
-    width: auto;
+.sf314Logo {
+    max-height: 70vh;
+    width: 15%;
+    height: auto;
     margin-bottom: 2vh;
     flex-shrink: 0;
 }
@@ -162,6 +163,13 @@ a {
   font-family: "Futura Bold";
 }
 
+.startingIn {
+  font-size: clamp(22px, 4vw, 32px);
+  font-family: "Futura Bold";
+  text-align: center;
+  width: 100%;
+}
+
 .setMeta {
   font-size: clamp(14px, 2.6vw, 18px);
   opacity: 0.85;
@@ -197,6 +205,29 @@ a {
   border-color: rgba(255,200,120,0.45);
 }
 
+.setList {
+  position: relative;
+}
+
+.tween {
+  transition: transform 520ms cubic-bezier(.2,.9,.2,1), opacity 520ms ease;
+  will-change: transform, opacity;
+}
+
+.tween-out-down {
+  transform: translateY(26px);
+  opacity: 0;
+}
+
+.tween-in-up {
+  transform: translateY(-26px);
+  opacity: 0;
+}
+
+.tween-in-go {
+  transform: translateY(0);
+  opacity: 1;
+}
 
 @media (max-width: 400px) {
     .topText {
