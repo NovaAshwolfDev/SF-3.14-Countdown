@@ -14,7 +14,6 @@
     const logo = document.querySelector(".sf314Logo");
     if (!wrap || !logo) return;
 
-    // one rAF is enough, and it's way less jank
     requestAnimationFrame(() => {
       wrap.classList.toggle("logoShift", isGate);
       logo.classList.toggle("logoBig", isGate);
@@ -34,30 +33,27 @@
       };
 
       el.addEventListener("transitionend", done);
-      setTimeout(() => done(), ms); // fallback
+      setTimeout(() => done(), ms);
     });
   }
 
   async function tweenSwap(container, html) {
-    // Animate the whole container out
     container.classList.add("tween", "tween-out-down");
     await waitTransition(container, 420);
 
     container.innerHTML = typeof html === "string" ? html : html.innerHTML;
     container.classList.remove("tween-out-down");
 
-    // Snap to start position (below, invisible)
     container.classList.add("tween-prep");
-    container.getBoundingClientRect(); // force layout
+    container.getBoundingClientRect();
 
     await new Promise(r => setTimeout(r, 16));
 
     container.classList.remove("tween-prep");
     container.classList.add("tween-in-up");
-    container.getBoundingClientRect(); // force layout
+    container.getBoundingClientRect();
     container.classList.add("tween-in-go");
 
-    // Clean up after transition
     await waitTransition(container, 420);
     container.classList.remove("tween", "tween-in-up", "tween-in-go");
   }
