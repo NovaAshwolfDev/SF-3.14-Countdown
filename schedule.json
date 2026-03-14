@@ -1,4 +1,5 @@
-    "djList": [
+{ 
+  "djList": [
         {
             "name": "Avian Invasion",
             "startTime": 1773514800,
@@ -42,3 +43,4 @@
             "genre": "Psychedelic Bass Vibes"
         }
     ]
+}
