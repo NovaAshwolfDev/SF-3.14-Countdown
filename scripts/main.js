@@ -109,10 +109,9 @@
 
   function pickWindow(now) {
     if (!sets.length) return [];
-    let idx = sets.findIndex(s => now < s.endMs);
-    if (idx < 0) idx = sets.length - 1;
-    const window = sets.slice(idx, idx + VISIBLE);
-    return window;
+    const idx = sets.findIndex(s => now < s.endMs);
+    if (idx < 0) return []; // all sets have ended
+    return sets.slice(idx, idx + VISIBLE);
   }
 
   function labelForIndex(i, now, item) {
@@ -231,88 +230,105 @@
     if (isRendering) return;
     isRendering = true;
     try {
-    const now = Date.now();
-    const nextInfo = getNextFuture(now);
+      const now = Date.now();
+      const nextInfo = getNextFuture(now);
 
-    const nextMode = (nextInfo && nextInfo.diff > 86400000) ? "gate" : "sets";
+      const nextMode = (nextInfo && nextInfo.diff > 86400000) ? "gate" : "sets";
 
-    if (nextMode === "gate") {
-      const { diff } = nextInfo;
+      if (nextMode === "gate") {
+        const { diff } = nextInfo;
 
-      const gateHTML = `
+        const gateHTML = `
           <div class="setCard">
             <div class="setTopLine">
               <div class="startingIn">Stage Flight 3.14 starts in ${formatDays(diff)}.</div>
             </div>
-          </div>
-        `;
+          </div>`;
 
-      if (viewMode !== "gate") {
-        viewMode = "gate";
-        currentKeys = [];
-
-        setLogoGateState(true);
-        await tweenSwap(container, gateHTML);
-      } else {
-        const el = container.querySelector(".startingIn");
-        if (el) el.textContent = `Stage Flight 3.14 starts in ${formatDays(diff)}.`;
+        if (viewMode !== "gate") {
+          viewMode = "gate";
+          currentKeys = [];
+          setLogoGateState(true);
+          await tweenSwap(container, gateHTML);
+        } else {
+          const el = container.querySelector(".startingIn");
+          if (el) el.textContent = `Stage Flight 3.14 starts in ${formatDays(diff)}.`;
+        }
+        return;
       }
-      return;
-    }
 
-    const windowSets = pickWindow(now);
-    const newKeys = windowSets.map(s => s.key);
+      const windowSets = pickWindow(now);
 
-    if (viewMode !== "sets") {
-      viewMode = "sets";
+      if (!windowSets.length) {
+        if (viewMode !== "done") {
+          viewMode = "done";
+          currentKeys = [];
+          setLogoGateState(true);
+          await tweenSwap(container, `
+            <div class="setCard">
+              <div class="setTopLine">
+                <div class="startingIn">Thanks for flying! Stay Safe.</div>
+              </div>
+            </div>`);
+        }
+        if (tickTimer) {
+          clearInterval(tickTimer);
+          tickTimer = null;
+        }
+        return;
+      }
+      const newKeys = windowSets.map(s => s.key);
 
-      const temp = document.createElement("div");
+      if (viewMode !== "sets") {
+        viewMode = "sets";
+
+        const temp = document.createElement("div");
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < windowSets.length; i++) frag.appendChild(buildCard(windowSets[i], i, now));
+        temp.appendChild(frag);
+        setLogoGateState(false);
+        await tweenSwap(container, temp.innerHTML);
+        currentKeys = newKeys;
+        return;
+      }
+
+      const before = rectMap(container);
+
+      const existing = new Map();
+      container.querySelectorAll(".setCard").forEach(el => existing.set(el.dataset.key, el));
+
+      if (currentKeys.length && currentKeys[0] !== newKeys[0]) {
+        const oldTop = existing.get(currentKeys[0]);
+        if (oldTop) {
+          oldTop.classList.add("exit");
+          setTimeout(() => {
+            if (oldTop.parentNode) oldTop.parentNode.removeChild(oldTop);
+          }, 430);
+        }
+      }
+
       const frag = document.createDocumentFragment();
-      for (let i = 0; i < windowSets.length; i++) frag.appendChild(buildCard(windowSets[i], i, now));
-      temp.appendChild(frag);
-      setLogoGateState(false);
-      await tweenSwap(container, temp.innerHTML);
+      for (let i = 0; i < windowSets.length; i++) {
+        const item = windowSets[i];
+        const prevEl = existing.get(item.key);
+        if (prevEl) {
+          updateCardText(prevEl, item, i, now);
+          frag.appendChild(prevEl);
+        } else {
+          frag.appendChild(buildCard(item, i, now));
+        }
+      }
+
+      container.innerHTML = "";
+      container.appendChild(frag);
+
+      const after = rectMap(container);
+      applyFLIP(container, before, after);
+
       currentKeys = newKeys;
-      return;
+    } finally {
+      isRendering = false;
     }
-
-    const before = rectMap(container);
-
-    const existing = new Map();
-    container.querySelectorAll(".setCard").forEach(el => existing.set(el.dataset.key, el));
-
-    if (currentKeys.length && currentKeys[0] !== newKeys[0]) {
-      const oldTop = existing.get(currentKeys[0]);
-      if (oldTop) {
-        oldTop.classList.add("exit");
-        setTimeout(() => {
-          if (oldTop.parentNode) oldTop.parentNode.removeChild(oldTop);
-        }, 430);
-      }
-    }
-
-    const frag = document.createDocumentFragment();
-    for (let i = 0; i < windowSets.length; i++) {
-      const item = windowSets[i];
-      const prevEl = existing.get(item.key);
-      if (prevEl) {
-        updateCardText(prevEl, item, i, now);
-        frag.appendChild(prevEl);
-      } else {
-        frag.appendChild(buildCard(item, i, now));
-      }
-    }
-
-    container.innerHTML = "";
-    container.appendChild(frag);
-
-    const after = rectMap(container);
-    applyFLIP(container, before, after);
-
-    currentKeys = newKeys;
-  } finally {
-    isRendering = false;
-  }
   }
   async function boot() {
     const container = document.getElementById("setList");
